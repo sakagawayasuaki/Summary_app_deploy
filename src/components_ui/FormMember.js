@@ -9,18 +9,19 @@ function FormMember({ members, setMembers }) {
     division: "",
     name: "",
   };
-  const [list, setMember] = useState([iniMember]);
-  const [iconBackColor, setIconBackColor] = useState("gray.200");
-
+  const [list,setMember] = useState([iniMember]);
+  const [iconBackColor, setIconBackColor] = useState('gray.200');
+  
   // menbers([部署+名前のリスト])を更新する関数
-  const settingMembers = (id, name, division) => {
+  const settingMembers = (id, name ,division) =>{
     // リストを定義
-    const membersTmp = [];
+    const membersTmp = []
     list.map((member) => {
-      if (member.id === id) {
-        membersTmp.push(division + " " + name);
-      } else {
-        membersTmp.push(member.division + " " + member.name);
+      if(member.id === id ){
+        membersTmp.push(division+" "+name);
+      }
+      else{
+        membersTmp.push(member.division +" "+ member.name);
       }
     });
     setMembers(membersTmp);
@@ -31,8 +32,8 @@ function FormMember({ members, setMembers }) {
     setMember((prevList) =>
       prevList.map((member) => (member.id === id ? newMember : member))
     );
-    settingMembers(id, name, e.target.value);
-    setIconBackColor(e.target.value ? "green.500" : "gray.300");
+    settingMembers(id, name ,e.target.value);
+    setIconBackColor(e.target.value && name ? 'green.500' : 'gray.200');
   };
   // 名前のStateを更新
   const changeName = (id, division, e) => {
@@ -40,8 +41,8 @@ function FormMember({ members, setMembers }) {
     setMember((prevList) =>
       prevList.map((member) => (member.id === id ? newMember : member))
     );
-    settingMembers(id, e.target.value, division);
-    setIconBackColor(e.target.value ? "green.500" : "gray.300");
+    settingMembers(id, e.target.value ,division);
+    setIconBackColor(division && e.target.value ? 'green.500' : 'gray.200');
   };
   // 空の入力欄を追加する関数
   const addList = (e) => {
@@ -49,9 +50,10 @@ function FormMember({ members, setMembers }) {
     const newMember = {
       id: Math.floor(Math.random() * 1e5),
       division: "",
-      name: "",
+      name:"",
     };
     setMember([...list, newMember]);
+    setIconBackColor('gray.200');
   };
 
   // 入力欄を削除
