@@ -8,7 +8,16 @@ on:
     types: [opened, synchronize, reopened, closed]
     branches:
       - main
-
+env:
+  REACT_APP_FIREBASE_APIKEY: ${{secrets.REACT_APP_FIREBASE_APIKEY}}
+  REACT_APP_FIREBASE_DOMAIN: ${{secrets.REACT_APP_FIREBASE_DOMAIN}}
+  REACT_APP_FIREBASE_DATABASE: ${{secrets.REACT_APP_FIREBASE_DATABASE}}
+  REACT_APP_FIREBASE_PROJECT_ID: ${{secrets.REACT_APP_FIREBASE_PROJECT_ID}}
+  REACT_APP_FIREBASE_STORAGE_BUCKET: ${{secrets.REACT_APP_FIREBASE_STORAGE_BUCKET}}
+  REACT_APP_FIREBASE_SENDER_ID: ${{secrets.REACT_APP_FIREBASE_SENDER_ID}}
+  REACT_APP_FIREBASE_APP_ID: ${{secrets.REACT_APP_FIREBASE_APP_ID}}
+  GENERATE_SOURCEMAP: ${{secrets.GENERATE_SOURCEMAP}}
+  
 jobs:
   build_and_deploy_job:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
