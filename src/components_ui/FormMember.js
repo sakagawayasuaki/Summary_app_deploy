@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Box, Input, HStack, IconButton, Text } from "@chakra-ui/react";
 import { FaCheck } from "react-icons/fa";
 import { AddIcon, MinusIcon } from "@chakra-ui/icons";
+import FormMembersName from "./FormMemberName";
 
 function FormMember({ members, setMembers }) {
   const iniMember = {
@@ -10,6 +11,7 @@ function FormMember({ members, setMembers }) {
     name: "",
   };
   const [list,setMember] = useState([iniMember]);
+  const [nameList,setNameList] = useState([iniMember]);
   const [iconBackColor, setIconBackColor] = useState('gray.200');
   
   // menbers([部署+名前のリスト])を更新する関数
@@ -102,6 +104,7 @@ function FormMember({ members, setMembers }) {
                   }
                 />
               </Box>
+
               <Box width="140px">
                 <Input
                   type="text"
@@ -113,6 +116,7 @@ function FormMember({ members, setMembers }) {
                   }
                 />
               </Box>
+
               <IconButton
                 aria-label="Minus button"
                 size="xs"
