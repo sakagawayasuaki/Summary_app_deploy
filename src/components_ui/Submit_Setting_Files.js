@@ -229,7 +229,9 @@ function Submit_Setting_Files() {
                 </Modal>
               </HStack>
               {/* ファイル名の表示 */}
-              <p>{txt && txt.name}</p>
+              <Text ml="8" mb="5">
+                {txt && txt.name}
+              </Text>
 
               {fileType === "video" && (
                 <>

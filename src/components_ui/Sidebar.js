@@ -80,10 +80,24 @@ function Sidebar({ isOpen, toggleSidebar, setShowFeed }) {
       </Button>
       {/* ここに他のサイドバーの内容を追加できます */}
       <Box>
-        <Text fontSize="16px" color="#F9FAF6" mt="2">
+        <Text
+          fontSize="16px"
+          color="#F9FAF6"
+          mt="2"
+          _hover={{ backgroundColor: "rgba(255, 255, 255, 0.15)" }} // ホバー時の背景色を指定します
+          width="110%" // テキスト要素の幅を100%に設定します
+          p={1}
+        >
           プロフィール
         </Text>
-        <Text fontSize="16px" color="#F9FAF6" mt="2">
+        <Text
+          fontSize="16px"
+          color="#F9FAF6"
+          mt="2"
+          _hover={{ backgroundColor: "rgba(255, 255, 255, 0.15)" }} // ホバー時の背景色を指定します
+          width="110%" // テキスト要素の幅を100%に設定します
+          p={1}
+        >
           アカウント設定
         </Text>
 
@@ -118,51 +132,85 @@ function Sidebar({ isOpen, toggleSidebar, setShowFeed }) {
 
       {/* 20230917追加 ファイル履歴 */}
       <Box mt="2px">
-        {Object.keys(fileGroups).map((date) => (
-          <Box key={date}>
-            <Text
-              fontSize="14px"
-              color="#F9FAF6"
-              mt="1"
-              ml="1"
-              onClick={() =>
-                setExpandedDate(expandedDate === date ? null : date)
-              }
-              _hover={{ cursor: "pointer", textDecoration: "underline" }}
-            >
-              {date}
-            </Text>
-            {expandedDate === date &&
-              fileGroups[date].map((fileName) => (
-                <Box display="flex" ml="0" mt="1" alignItems="center">
-                  <Text fontSize="12px" color="#F9FAF6" mr="2">
-                    ・
-                  </Text>
-                  <Text
-                    key={fileName}
-                    fontSize="12px"
-                    color="#F9FAF6"
-                    onClick={() => handleDownload(fileName)}
-                    _hover={{ cursor: "pointer", textDecoration: "underline" }}
-                  >
-                    {fileName}
-                  </Text>
-                </Box>
-              ))}
-          </Box>
-        ))}
+        {Object.keys(fileGroups)
+          .sort((a, b) => b.localeCompare(a))
+          .slice(0, 6) // ここで最初の10件だけを取得
+          .map((date) => (
+            <Box key={date}>
+              <Text
+                fontSize="14px"
+                color="#F9FAF6"
+                mt="1"
+                ml="1"
+                onClick={() =>
+                  setExpandedDate(expandedDate === date ? null : date)
+                }
+                _hover={{ cursor: "pointer", textDecoration: "underline" }}
+              >
+                {date}
+              </Text>
+              {expandedDate === date &&
+                fileGroups[date].map((fileName) => (
+                  <Box display="flex" ml="0" mt="1" alignItems="center">
+                    <Text fontSize="12px" color="#F9FAF6" mr="2">
+                      ・
+                    </Text>
+                    <Text
+                      key={fileName}
+                      fontSize="12px"
+                      color="#F9FAF6"
+                      onClick={() => handleDownload(fileName)}
+                      _hover={{
+                        cursor: "pointer",
+                        textDecoration: "underline",
+                      }}
+                    >
+                      {fileName}
+                    </Text>
+                  </Box>
+                ))}
+            </Box>
+          ))}
       </Box>
       <Box position="absolute" bottom="40px">
-        <Text fontSize="16px" color="#F9FAF6" mt="2">
+        <Text
+          fontSize="16px"
+          color="#F9FAF6"
+          mt="2"
+          _hover={{ backgroundColor: "rgba(255, 255, 255, 0.15)" }} // ホバー時の背景色を指定します
+          width="110%" // テキスト要素の幅を100%に設定します
+          p={1}
+        >
           アプリの使い方
         </Text>
-        <Text fontSize="16px" color="#F9FAF6" mt="2">
+        <Text
+          fontSize="16px"
+          color="#F9FAF6"
+          mt="2"
+          _hover={{ backgroundColor: "rgba(255, 255, 255, 0.15)" }} // ホバー時の背景色を指定します
+          width="110%" // テキスト要素の幅を100%に設定します
+          p={1}
+        >
           ヘルプ
         </Text>
-        <Text fontSize="16px" color="#F9FAF6" mt="2">
+        <Text
+          fontSize="16px"
+          color="#F9FAF6"
+          mt="2"
+          _hover={{ backgroundColor: "rgba(255, 255, 255, 0.15)" }} // ホバー時の背景色を指定します
+          width="110%" // テキスト要素の幅を100%に設定します
+          p={1}
+        >
           問い合わせ
         </Text>
-        <Text fontSize="16px" color="#F9FAF6" mt="2">
+        <Text
+          fontSize="16px"
+          color="#F9FAF6"
+          mt="2"
+          _hover={{ backgroundColor: "rgba(255, 255, 255, 0.15)" }} // ホバー時の背景色を指定します
+          width="110%" // テキスト要素の幅を100%に設定します
+          p={1}
+        >
           運営会社
         </Text>
       </Box>

@@ -11,10 +11,25 @@ import {
   getCurrentUser,
 } from "../components/firebaseUtils"; // 20230923 追加
 import { FaCheckCircle, FaSpinner, FaDownload } from "react-icons/fa";
-import { DownloadIcon } from "@chakra-ui/icons";
-import { Text, Center, Flex, Box, useColorModeValue } from "@chakra-ui/react";
+import { DownloadIcon, ViewIcon } from "@chakra-ui/icons";
+import {
+  Text,
+  Center,
+  Flex,
+  Box,
+  useColorModeValue,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  Button,
+  useDisclosure,
+  Textarea,
+} from "@chakra-ui/react";
 
-const DL = () => {
+const DL = ({ fileType }) => {
   const [buttonDisabled, setButtonDisabled] = useState(true);
   // インターバルを格納する状態変数
   const currentUser = getCurrentUser(); // ← 追加
@@ -23,6 +38,8 @@ const DL = () => {
   const address = currentUser.email;
   const disabledIconColor = useColorModeValue("gray.400", "gray.600");
   const hoverIconColor = useColorModeValue("gray.700", "gray.300");
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [fileContent, setFileContent] = useState("");
 
   const contextValue = useContext(Pathcontext);
   let summary_path, transcription_path;
@@ -39,6 +56,9 @@ const DL = () => {
   // const fileName ="static/result/summary/summary_20230918225155__whisper検証.txt"
 
   const url = useContext(root);
+  const [encoding, setEncoding] = useState("UTF-8");
+  const [uint8Array, setUint8Array] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   console.log("Debug Path Summary1: ", pathsummary);
   console.log("Debug Path Summary2: ", pathtranscription);
@@ -84,7 +104,39 @@ const DL = () => {
     }
   };
 
+  const fetchFileContent = async (path) => {
+    try {
+      const url = await getFirebaseDownloadURL(path);
+      const response = await fetch(url);
+      // const content = await response.text(); // この行は不要なのでコメントアウト
+      const arrayBuffer = await response.arrayBuffer(); // レスポンスをArrayBufferとして取得
+      setUint8Array(new Uint8Array(arrayBuffer)); // バイナリデータをステートにセット
+      decodeAndSetContent(new Uint8Array(arrayBuffer), encoding); // 初回デコード
+      setIsModalOpen(true);
+      onOpen();
+    } catch (error) {
+      console.error("Error fetching file content:", error);
+    }
+  };
+
   const interflag = false;
+
+  const decodeAndSetContent = (uint8Array, encoding) => {
+    try {
+      const text = new TextDecoder(encoding).decode(uint8Array);
+      setFileContent(text);
+    } catch (e) {
+      console.error(`Failed to decode as ${encoding}:`, e);
+    }
+  };
+
+  const toggleEncoding = () => {
+    const newEncoding = encoding === "UTF-8" ? "Shift_JIS" : "UTF-8";
+    setEncoding(newEncoding);
+    if (uint8Array) {
+      decodeAndSetContent(uint8Array, newEncoding);
+    }
+  };
 
   useEffect(
     (interflag) => {
@@ -95,8 +147,8 @@ const DL = () => {
         try {
           const url = await getFirebaseDownloadURL(pathsummary); // ← 修正
           setButtonDisabled(false);
-          alert("要約が完了しました");
           await post_mail();
+          alert("要約が完了しました");
 
           // もしbuttonDisabledがfalseになったら、intervalをクリアして実行を止めます
           clearInterval(intervalId);
@@ -136,6 +188,12 @@ const DL = () => {
     };
   }, []);
 
+  useEffect(() => {
+    if (uint8Array) {
+      decodeAndSetContent(uint8Array, encoding);
+    }
+  }, [uint8Array, encoding]);
+
   return (
     <Flex direction="column" alignItems="center" spacing={6}>
       <Text fontSize="xl" fontWeight="bold" color="#6FA2DF" mt="6" mb="8">
@@ -173,8 +231,18 @@ const DL = () => {
           {!buttonDisabled && <Text fontSize="xs">{summary_path}</Text>}
         </Box>
         <Box>
+          <ViewIcon
+            boxSize="20px"
+            color={buttonDisabled ? disabledIconColor : "black"}
+            _hover={{ color: hoverIconColor }}
+            onClick={
+              buttonDisabled ? null : () => fetchFileContent(pathsummary)
+            }
+          />
+        </Box>
+        <Box>
           <DownloadIcon
-            boxSize="30px"
+            boxSize="20px"
             color={buttonDisabled ? disabledIconColor : "black"}
             _hover={{ color: hoverIconColor }}
             onClick={
@@ -184,34 +252,49 @@ const DL = () => {
             }
           />
         </Box>
+        <Modal isOpen={isOpen} onClose={onClose}>
+          <ModalOverlay />
+          <ModalContent width="100%" maxW="80%" height="80%">
+            <ModalHeader>File Content</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <Button onClick={toggleEncoding} mb="5">
+                Switch Encoding ({encoding === "UTF-8" ? "Shift_JIS" : "UTF-8"})
+              </Button>
+              <Textarea value={fileContent} isReadOnly w="100%" h="600px" />
+            </ModalBody>
+          </ModalContent>
+        </Modal>
       </Flex>
 
-      <Flex width="100%" justifyContent="space-between" mt={4} mb={6}>
-        <Box
-          border="1px"
-          borderRadius="5px"
-          padding="4px"
-          maxWidth="85%"
-          width="100%"
-          overflow="hidden"
-          whiteSpace="nowrap"
-          textOverflow="ellipsis"
-        >
-          {!buttonDisabled && <Text fontSize="xs">{transcription_path}</Text>}
-        </Box>
-        <Box>
-          <DownloadIcon
-            boxSize="30px"
-            color={buttonDisabled ? disabledIconColor : "black"}
-            _hover={{ color: hoverIconColor }}
-            onClick={
-              buttonDisabled
-                ? null
-                : (event) => downloadfile(pathtranscription, event)
-            }
-          />
-        </Box>
-      </Flex>
+      {fileType === "video" && (
+        <Flex width="100%" justifyContent="space-between" mt={4} mb={6}>
+          <Box
+            border="1px"
+            borderRadius="5px"
+            padding="4px"
+            maxWidth="85%"
+            width="100%"
+            overflow="hidden"
+            whiteSpace="nowrap"
+            textOverflow="ellipsis"
+          >
+            {!buttonDisabled && <Text fontSize="xs">{transcription_path}</Text>}
+          </Box>
+          <Box>
+            <DownloadIcon
+              boxSize="30px"
+              color={buttonDisabled ? disabledIconColor : "black"}
+              _hover={{ color: hoverIconColor }}
+              onClick={
+                buttonDisabled
+                  ? null
+                  : (event) => downloadfile(pathtranscription, event)
+              }
+            />
+          </Box>
+        </Flex>
+      )}
     </Flex>
   );
 };
