@@ -8,8 +8,16 @@ import {
   Input,
   VStack,
   Spacer,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  Textarea,
+  Flex,
 } from "@chakra-ui/react";
-import { DownloadIcon } from "@chakra-ui/icons";
+import { DownloadIcon, ViewIcon } from "@chakra-ui/icons";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -27,6 +35,12 @@ const Feed = ({ setShowFeed }) => {
 
   const [dateSearchQuery, setDateSearchQuery] = useState(null);
   const [nameSearchQuery, setNameSearchQuery] = useState("");
+
+  // 画面表示
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [fileContent, setFileContent] = useState("");
+  const [encoding, setEncoding] = useState("UTF-8"); // 初期エンコーディングをUTF-8とする
+  const [uint8Array, setUint8Array] = useState(null); // 追加: バイナリデータを保持するステート
 
   useEffect(() => {
     // ログインユーザーのファイル一覧を取得する関数
@@ -49,7 +63,6 @@ const Feed = ({ setShowFeed }) => {
   const extractDateFromFileName = (fileName) => {
     const regex = /summary_(\d{8})/;
     const match = fileName.match(regex);
-
     return match ? match[1] : null;
   };
 
@@ -65,6 +78,8 @@ const Feed = ({ setShowFeed }) => {
           acc[date] = [];
         }
         acc[date].push(fileName);
+        // ここで各日付のファイル名をソートします
+        acc[date].sort((a, b) => b.localeCompare(a)); // 例: アルファベット順で降順にソート
       }
       return acc;
     }, {});
@@ -77,26 +92,6 @@ const Feed = ({ setShowFeed }) => {
       width: "250px", // DatePickerの幅を指定
     }),
   };
-
-  /*
-  // ファイルのアップロード処理を行う関数
-  const handleUpload = async () => {
-    // 選択されたファイルを取得
-    const file = fileInputRef.current?.files?.[0];
-
-    // 選択されたファイルが存在し、ユーザーがログインしている場合にアップロード処理を実行
-    if (file && auth.currentUser) {
-      // Firebase Storageへの参照を作成
-      const storageRef = storage.ref(
-        `files/${auth.currentUser.uid}/${file.name}`
-      );
-
-      // ファイルをFirebase Storageにアップロード
-      await storageRef.put(file);
-      alert("File uploaded successfully");
-    }
-  };
-  */
 
   // ファイルのダウンロード処理を行う関数
   const handleDownload = async (fileName) => {
@@ -151,6 +146,59 @@ const Feed = ({ setShowFeed }) => {
     return matchesNameQuery && matchesDateQuery;
   });
 
+  //画面表示関数
+  const handleFilePreview = async (fileName) => {
+    if (auth.currentUser) {
+      const storageRef = storage.ref(
+        `/static/${userId}/result/summary/${fileName}`
+      );
+      const url = await storageRef.getDownloadURL();
+
+      fetch(url)
+        .then((response) => response.blob())
+        .then((blob) => {
+          const reader = new FileReader();
+          reader.onload = (event) => {
+            const binary = event.target.result;
+            const uint8Array = new Uint8Array(binary);
+            setUint8Array(uint8Array); // バイナリデータをステートにセット
+
+            try {
+              const text = new TextDecoder(encoding).decode(uint8Array);
+              setFileContent(text);
+              setIsModalOpen(true);
+            } catch (e) {
+              console.error(`Failed to decode as ${encoding}:`, e);
+              // エラーハンドリング（例：ユーザーにエラーメッセージを表示）
+            }
+          };
+          reader.readAsArrayBuffer(blob);
+        })
+        .catch((error) => {
+          console.error("Error during file preview:", error);
+          // Handle the error appropriately
+        });
+    }
+  };
+
+  const toggleEncoding = () => {
+    setEncoding((prevEncoding) =>
+      prevEncoding === "UTF-8" ? "Shift_JIS" : "UTF-8"
+    );
+  };
+
+  // エンコーディングが変更されたときに再デコード
+  useEffect(() => {
+    if (uint8Array) {
+      try {
+        const text = new TextDecoder(encoding).decode(uint8Array);
+        setFileContent(text);
+      } catch (e) {
+        console.error(`Failed to decode as ${encoding}:`, e);
+      }
+    }
+  }, [encoding, uint8Array]);
+
   console.log("Filtered file list:", filteredFileList);
 
   const fileGroups = groupFilesByDate(filteredFileList);
@@ -163,15 +211,24 @@ const Feed = ({ setShowFeed }) => {
     new Date(dateSearchQuery).toISOString().slice(0, 10).replace(/-/g, "")
   );
 
-  const fileGroupKeys = fileGroups ? Object.keys(fileGroups) : [];
+  const fileGroupKeys = fileGroups
+    ? Object.keys(fileGroups).sort((a, b) => b - a)
+    : [];
 
   //<Box padding="20px" maxW="1000px" mx="auto">
   return (
     <Box padding="20px" maxW="600px" mx="auto">
       <section>
-        <Text fontSize="2xl" fontWeight="bold" mb="8">
-          書き起こし履歴：マイファイル参照
-        </Text>
+        {/* Flex container to align items horizontally */}
+        <Flex justifyContent="space-between" alignItems="center" mb="8">
+          <Text fontSize="2xl" fontWeight="bold">
+            書き起こし履歴：マイファイル参照
+          </Text>
+          {/* 戻るボタン */}
+          <Button fontSize="sm" onClick={() => setShowFeed(false)}>
+            戻る
+          </Button>
+        </Flex>
         {/* 検索フィールドを横並びにするFlexコンテナ */}
         <Box display="flex" justifyContent="space-between" mb="5">
           {/* 日付検索用のカレンダーUI */}
@@ -237,11 +294,45 @@ const Feed = ({ setShowFeed }) => {
                     <Spacer />{" "}
                     {/* この行を追加して、アイコンを右端に押し出します */}
                     <IconButton
+                      icon={<ViewIcon />}
+                      size="sm"
+                      fontSize="sm"
+                      onClick={() => handleFilePreview(fileName)}
+                      mr="2"
+                    />
+                    <IconButton
                       icon={<DownloadIcon />}
                       size="sm"
                       fontSize="sm"
                       onClick={() => handleDownload(fileName)}
+                      mr="2" // <- これを追加して、スペースを確保します
                     />
+                    {/* この部分の後ろ... */}
+                    <Box my="4">
+                      <Modal
+                        isOpen={isModalOpen}
+                        onClose={() => setIsModalOpen(false)}
+                      >
+                        <ModalOverlay />
+                        <ModalContent width="100%" maxW="80%" height="80%">
+                          <ModalHeader>File Preview</ModalHeader>
+                          <ModalCloseButton />
+                          <ModalBody>
+                            {/* エンコーディングを切り替えるUI */}
+                            <Button onClick={toggleEncoding} mb="5">
+                              Switch Encoding (
+                              {encoding === "UTF-8" ? "Shift_JIS" : "UTF-8"})
+                            </Button>
+                            <Textarea
+                              value={fileContent}
+                              isReadOnly
+                              w="100%"
+                              h="600px"
+                            />
+                          </ModalBody>
+                        </ModalContent>
+                      </Modal>
+                    </Box>
                   </Box>
                 ))}
               </Box>
@@ -249,12 +340,6 @@ const Feed = ({ setShowFeed }) => {
           </Box>
         </Box>
       </section>
-
-      <Box my="4">
-        <Button fontSize="sm" mb="10" onClick={() => setShowFeed(false)}>
-          戻る
-        </Button>
-      </Box>
     </Box>
   );
 };
