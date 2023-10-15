@@ -17,7 +17,6 @@ env:
   REACT_APP_FIREBASE_SENDER_ID: ${{secrets.REACT_APP_FIREBASE_SENDER_ID}}
   REACT_APP_FIREBASE_APP_ID: ${{secrets.REACT_APP_FIREBASE_APP_ID}}
   GENERATE_SOURCEMAP: ${{secrets.GENERATE_SOURCEMAP}}
-
   
 jobs:
   build_and_deploy_job:

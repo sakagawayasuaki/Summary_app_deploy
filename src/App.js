@@ -38,10 +38,9 @@ export const Pathcontext = createContext();
 export const Videocontext = createContext();
 export const Transcriptcontext = createContext();
 export const TxtContext = createContext();
-
 export const root = createContext(
-  "https://giziroku-fastapi-docker.azurewebsites.net/"
-); //http://127.0.0.1:8000///https://giziroku-fastapi-docker.azurewebsites.net
+  "https://giziroku-summary.azurewebsites.net/"
+); //http://127.0.0.1:8000///https://giziroku-fastapi-docker.azurewebsites.net//https://giziroku-summary.azurewebsites.net/
 export const Precisioncontext = createContext();
 
 function App() {
