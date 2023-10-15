@@ -171,7 +171,7 @@ function Submit_Setting_Files() {
   //<p>書き起こし：{transcription}</p>
 
   return (
-    <div style={{ width: "110%", margin: "0 auto", marginLeft: "-20%" }}>
+    <div>
       <Flex direction="column" width="100%">
         {hasStartedTranscription ? (
           // 3. hasStartedTranscriptionがtrueの場合の表示

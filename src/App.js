@@ -117,7 +117,7 @@ function App() {
   return (
     <>
       {user.uid ? (
-        <div>
+        <div style={{ minWidth:'640px'}}>
           <ChakraProvider>
             <Box h="48px" bg="#355379"></Box>
             <Sidebar
@@ -158,7 +158,7 @@ function App() {
                         >
                           <TxtContext.Provider value={[txt, setTxt]}>
                             {/*<Downloads />*/}
-                            <Box pl="20" width="480px">
+                            <Box width="440px">
                               {" "}
                               {/* このボックスに左のパディング20と幅480pxを設定pl="20" width="480px" * <Box padding="20px" maxW="600px" mx="auto">/}
                               {/* 動画のアップロード処理 */}
