@@ -61,6 +61,7 @@ function Sidebar({ isOpen, toggleSidebar, setShowFeed }) {
       transition="all 0.3s"
       overflowY="auto"
       boxShadow="md"
+      style={{ zIndex: 1000 }}
     >
       <Button
         colorScheme="brand"
