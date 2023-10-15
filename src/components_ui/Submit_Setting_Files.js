@@ -33,7 +33,7 @@ import SliderAccuracy from "./SliderAccuracy";
 import SelectFiles from "./SelectFiles";
 import FormTitle from "./FormTitle";
 import FormTime from "./FormTime";
-import FormMember from "./FormMember";
+import FormMemberName from "./FormMemberName";
 import DL from "../component/DLfirebase";
 
 import { getCurrentUser } from "../components/firebaseUtils"; // 20230923 追加
@@ -289,7 +289,7 @@ function Submit_Setting_Files() {
                 {/* <p>{title}</p> */}
                 <FormTime inputName="日時" setDate={setDate} />
                 {/* <p>{date}</p> */}
-                <FormMember members={members} setMembers={setMembers} />
+                <FormMemberName members={members} setMembers={setMembers} />
                 {/* <div>
                             {members.map((member) => {
                                 return (
