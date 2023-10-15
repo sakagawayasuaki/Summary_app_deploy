@@ -117,7 +117,7 @@ function App() {
   return (
     <>
       {user.uid ? (
-        <div style={{ minWidth:'640px'}}>
+        <div style={{ minWidth:'720px'}}>
           <ChakraProvider>
             <Box h="48px" bg="#355379"></Box>
             <Sidebar
