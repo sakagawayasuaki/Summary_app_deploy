@@ -117,9 +117,10 @@ function App() {
   return (
     <>
       {user.uid ? (
-        <div style={{ minWidth:'640px'}}>
+        <div style={{ minWidth:'640px' }}>
           <ChakraProvider>
-            <Box h="48px" bg="#355379"></Box>
+            <Box h="48px" bg="#355379" position="fixed" top="0" left="0" right="0" style={{ zIndex: 1000 }}></Box>
+            
             <Sidebar
               isOpen={isOpen}
               toggleSidebar={toggleSidebar}
@@ -129,8 +130,9 @@ function App() {
               <Feed setShowFeed={setShowFeed} />
             ) : (
               <Flex
+                mt="48px"
                 ml={isOpen ? "200px" : "20px"} // サイドバーが開いている場合のマージンと閉じている場合のマージン
-                p="8" // すべての方向に対するパディング
+                p="8px" // すべての方向に対するパディング
                 transition="all 0.3s" // トランジションの効果をすべてのプロパティに0.3秒で適用
                 alignItems="center" // 垂直方向の中央寄せ
                 justifyContent="center" // 水平方向の中央寄せ
@@ -172,6 +174,7 @@ function App() {
                 </Mycontext.Provider>
               </Flex>
             )}
+
           </ChakraProvider>
         </div>
       ) : (
