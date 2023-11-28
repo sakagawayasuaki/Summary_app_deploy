@@ -19,17 +19,12 @@ import Sidebar from "./components_ui/Sidebar";
 import FileUploadButton from "./components_ui/FileUploadButton";
 import FormTitle from "./components_ui/FormTitle";
 import FormTime from "./components_ui/FormTime";
-
-// import PostSetting from "./component/PostSetting";
-// import SubmitFiles from "./component/SubmitFiles";
-// import Downloads from "./component/Download";
 import Submit_Setting_Files from "./components_ui/Submit_Setting_Files";
 
 // firebase用で追加
 import { useSelector, useDispatch } from "react-redux";
 import { selectUser, login, logout } from "./features/userSlice";
 import { auth } from "./firebase";
-//import styles from "./App.module.css";
 import Feed from "./components/Feed";
 import Auth from "./components/Auth";
 
@@ -54,8 +49,6 @@ function App() {
   const [precision, setPrecision] = useState("low");
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
-  // const setting_filename="20230829095105_settings.json"
-  // UI関連
   const [isOpen, setIsOpen] = useState(true);
   const toggleSidebar = () => {
     setIsOpen((prevIsOpen) => !prevIsOpen);
@@ -110,17 +103,23 @@ function App() {
   if (auth.currentUser) {
     const userid = auth.currentUser.uid;
     const email = auth.currentUser.email;
-    console.log(`The user's id is ${userid}`);
-    console.log(`The user's email is ${email}`);
   }
 
   return (
     <>
       {user.uid ? (
-        <div style={{ minWidth:'640px' }}>
+        <div style={{ minWidth: "640px" }}>
           <ChakraProvider>
-            <Box h="48px" bg="#355379" position="fixed" top="0" left="0" right="0" style={{ zIndex: 1000 }}></Box>
-            
+            <Box
+              h="48px"
+              bg="#355379"
+              position="fixed"
+              top="0"
+              left="0"
+              right="0"
+              style={{ zIndex: 1000 }}
+            ></Box>
+
             <Sidebar
               isOpen={isOpen}
               toggleSidebar={toggleSidebar}
@@ -174,7 +173,6 @@ function App() {
                 </Mycontext.Provider>
               </Flex>
             )}
-
           </ChakraProvider>
         </div>
       ) : (

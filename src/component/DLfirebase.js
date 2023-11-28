@@ -1,11 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import { root } from "../App";
 import axios from "axios";
-//import { initializeApp } from "firebase/app";
-//import { ref, getDownloadURL } from "firebase/storage";
 import { Pathcontext } from "../App";
-// import dotenv from 'dotenv';
-// import { db, auth, storage, firebaseConfig } from "../firebase";
 import {
   getFirebaseDownloadURL,
   getCurrentUser,
@@ -31,10 +27,8 @@ import {
 
 const DL = ({ fileType }) => {
   const [buttonDisabled, setButtonDisabled] = useState(true);
-  // インターバルを格納する状態変数
-  const currentUser = getCurrentUser(); // ← 追加
+  const currentUser = getCurrentUser();
   const id = currentUser.id;
-  // const address = "wkzhiro0116@yahoo.co.jp";
   const address = currentUser.email;
   const disabledIconColor = useColorModeValue("gray.400", "gray.600");
   const hoverIconColor = useColorModeValue("gray.700", "gray.300");
@@ -50,11 +44,6 @@ const DL = ({ fileType }) => {
   const pathsummary = `static/${currentUser.id}/result/summary/` + summary_path; // ← 修正
   const pathtranscription =
     `static/${currentUser.id}/result/transcription/` + transcription_path; // ← 修正
-  // const app = initializeApp(firebaseConfig);
-  // const storage= getStorage(app)
-  // const storage = firebase.storage();
-  // const fileName ="static/result/summary/summary_20230918225155__whisper検証.txt"
-
   const url = useContext(root);
   const [encoding, setEncoding] = useState("UTF-8");
   const [uint8Array, setUint8Array] = useState(null);
@@ -108,7 +97,6 @@ const DL = ({ fileType }) => {
     try {
       const url = await getFirebaseDownloadURL(path);
       const response = await fetch(url);
-      // const content = await response.text(); // この行は不要なのでコメントアウト
       const arrayBuffer = await response.arrayBuffer(); // レスポンスをArrayBufferとして取得
       setUint8Array(new Uint8Array(arrayBuffer)); // バイナリデータをステートにセット
       decodeAndSetContent(new Uint8Array(arrayBuffer), encoding); // 初回デコード

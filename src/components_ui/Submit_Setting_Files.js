@@ -172,7 +172,7 @@ function Submit_Setting_Files() {
 
   return (
     <div>
-      <Flex direction="column" width="100%">
+      <Flex direction="column" width="100%" paddingTop="20px">
         {hasStartedTranscription ? (
           // 3. hasStartedTranscriptionがtrueの場合の表示
           <>
