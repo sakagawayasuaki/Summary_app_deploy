@@ -228,11 +228,11 @@ function Submit_Setting_Files() {
 
                 {/* 議事録フォーマットの選択 */}
                 <Text
-                  mt="4"
-                  mb="3"
+                  mt="10"
+                  mb="2"
                   style={{
                     fontFamily: "Roboto, sans-serif",
-                    fontSize: "24px",
+                    fontSize: "28px",
                     fontWeight: "600",
                   }}
                   textAlign="center"

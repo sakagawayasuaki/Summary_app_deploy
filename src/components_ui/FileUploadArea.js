@@ -81,7 +81,7 @@ function FileUploadArea({ onFileSelected }) {
               動画MP4ファイル
             </Text>
             <Text mt="1" textAlign="center">
-              文字起こし済txtファイル
+              文字起こしtxtファイル
             </Text>
             <Text mt="1" textAlign="center">
               選択 or ドラック＆ドロップ
