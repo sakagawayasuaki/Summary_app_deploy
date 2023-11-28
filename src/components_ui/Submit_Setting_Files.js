@@ -34,7 +34,7 @@ import SelectFiles from "./SelectFiles";
 import FormTitle from "./FormTitle";
 import FormTime from "./FormTime";
 import FormMemberName from "./FormMemberName";
-import DL from "../components/DLfirebase";
+import DL from "../component/DLfirebase";
 
 import { getCurrentUser } from "../components/firebaseUtils"; // 20230923 追加
 import axios from "axios";

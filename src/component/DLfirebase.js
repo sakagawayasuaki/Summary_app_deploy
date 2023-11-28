@@ -2,7 +2,10 @@ import React, { useState, useContext, useEffect } from "react";
 import { root } from "../App";
 import axios from "axios";
 import { Pathcontext } from "../App";
-import { getFirebaseDownloadURL, getCurrentUser } from "./firebaseUtils"; // 20230923 追加
+import {
+  getFirebaseDownloadURL,
+  getCurrentUser,
+} from "../components/firebaseUtils"; // 20230923 追加
 import { FaCheckCircle, FaSpinner, FaDownload } from "react-icons/fa";
 import { DownloadIcon, ViewIcon } from "@chakra-ui/icons";
 import {
