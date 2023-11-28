@@ -82,20 +82,36 @@ function Sidebar({ isOpen, toggleSidebar, setShowFeed }) {
       {/* ここに他のサイドバーの内容を追加できます */}
       <Box>
         <Text
-          fontSize="16px"
-          color="#F9FAF6"
+          fontSize="18px"
+          color="#FFFFFF"
+          fontFamily="'Roboto', sans-serif" // ここでフォントファミリーを指定
+          fontWeight="600"
           mt="2"
-          _hover={{ backgroundColor: "rgba(255, 255, 255, 0.15)" }} // ホバー時の背景色を指定します
+          _hover={{ backgroundColor: "rgba(255, 255, 255, 0.2)" }} // ホバー時の背景色を指定します
+          width="110%" // テキスト要素の幅を100%に設定します
+          p={1}
+        >
+          ホーム
+        </Text>
+        <Text
+          fontSize="18px"
+          color="#FFFFFF"
+          fontFamily="'Roboto', sans-serif" // ここでフォントファミリーを指定
+          fontWeight="600"
+          mt="2"
+          _hover={{ backgroundColor: "rgba(255, 255, 255, 0.2)" }} // ホバー時の背景色を指定します
           width="110%" // テキスト要素の幅を100%に設定します
           p={1}
         >
           プロフィール
         </Text>
         <Text
-          fontSize="16px"
-          color="#F9FAF6"
+          fontSize="18px"
+          color="#FFFFFF"
+          fontFamily="'Roboto', sans-serif" // ここでフォントファミリーを指定
+          fontWeight="600"
           mt="2"
-          _hover={{ backgroundColor: "rgba(255, 255, 255, 0.15)" }} // ホバー時の背景色を指定します
+          _hover={{ backgroundColor: "rgba(255, 255, 255, 0.2)" }} // ホバー時の背景色を指定します
           width="110%" // テキスト要素の幅を100%に設定します
           p={1}
         >
@@ -104,14 +120,15 @@ function Sidebar({ isOpen, toggleSidebar, setShowFeed }) {
 
         {/* 20230917追加 ログアウト機能*/}
         <Text
-          mt={2} // 適切なマージンを設定して、ボタンが他の要素から適切な距離を保つようにします
-          fontSize="16px"
-          color="#F9FAF6"
+          fontSize="18px"
+          color="#FFFFFF"
           onClick={() => auth.signOut()} // ログアウト処理を行う関数を呼び出します
-          _hover={{ backgroundColor: "rgba(255, 255, 255, 0.15)" }} // ホバー時の背景色を指定します
+          fontFamily="'Roboto', sans-serif" // ここでフォントファミリーを指定
+          fontWeight="600"
+          mt="2"
+          _hover={{ backgroundColor: "rgba(255, 255, 255, 0.2)" }} // ホバー時の背景色を指定します
           width="110%" // テキスト要素の幅を100%に設定します
-          p={1} // パディングを追加してテキスト周りにスペースを作ります
-          //borderRadius="md" // 丸みを帯びたボーダーを追加しま
+          p={1}
         >
           ログアウト
         </Text>
@@ -119,13 +136,15 @@ function Sidebar({ isOpen, toggleSidebar, setShowFeed }) {
 
       <Box mt="100px">
         <Text
-          fontSize="16px"
-          color="#F9FAF6"
+          fontSize="18px"
+          color="#FFFFFF"
+          fontFamily="'Roboto', sans-serif" // ここでフォントファミリーを指定
+          fontWeight="600"
           mt="2"
           onClick={() => setShowFeed(true)}
-          _hover={{ backgroundColor: "rgba(255, 255, 255, 0.15)" }} // ホバー時の背景色を指定します
+          _hover={{ backgroundColor: "rgba(255, 255, 255, 0.2)" }} // ホバー時の背景色を指定します
           width="110%" // テキスト要素の幅を100%に設定します
-          p={1} // パディングを追加してテキスト周りにスペースを作ります
+          p={1}
         >
           書き起こし履歴
         </Text>
@@ -139,8 +158,10 @@ function Sidebar({ isOpen, toggleSidebar, setShowFeed }) {
           .map((date) => (
             <Box key={date}>
               <Text
-                fontSize="14px"
-                color="#F9FAF6"
+                fontSize="16px"
+                color="#FFFFFF"
+                fontFamily="'Roboto', sans-serif" // ここでフォントファミリーを指定
+                fontWeight="200"
                 mt="1"
                 ml="1"
                 onClick={() =>
@@ -158,8 +179,10 @@ function Sidebar({ isOpen, toggleSidebar, setShowFeed }) {
                     </Text>
                     <Text
                       key={fileName}
-                      fontSize="12px"
-                      color="#F9FAF6"
+                      fontSize="16px"
+                      color="#FFFFFF"
+                      fontFamily="'Roboto', sans-serif" // ここでフォントファミリーを指定
+                      fontWeight="200"
                       onClick={() => handleDownload(fileName)}
                       _hover={{
                         cursor: "pointer",
@@ -173,43 +196,52 @@ function Sidebar({ isOpen, toggleSidebar, setShowFeed }) {
             </Box>
           ))}
       </Box>
+
       <Box position="absolute" bottom="40px">
         <Text
-          fontSize="16px"
-          color="#F9FAF6"
+          fontSize="18px"
+          color="#FFFFFF"
+          fontFamily="'Roboto', sans-serif" // ここでフォントファミリーを指定
+          fontWeight="600"
           mt="2"
-          _hover={{ backgroundColor: "rgba(255, 255, 255, 0.15)" }} // ホバー時の背景色を指定します
-          width="110%" // テキスト要素の幅を100%に設定します
+          _hover={{ backgroundColor: "rgba(255, 255, 255, 0.2)" }} // ホバー時の背景色を指定します
+          width="136%" // テキスト要素の幅を100%に設定します
           p={1}
         >
           アプリの使い方
         </Text>
         <Text
-          fontSize="16px"
-          color="#F9FAF6"
+          fontSize="18px"
+          color="#FFFFFF"
+          fontFamily="'Roboto', sans-serif" // ここでフォントファミリーを指定
+          fontWeight="600"
           mt="2"
-          _hover={{ backgroundColor: "rgba(255, 255, 255, 0.15)" }} // ホバー時の背景色を指定します
-          width="110%" // テキスト要素の幅を100%に設定します
+          _hover={{ backgroundColor: "rgba(255, 255, 255, 0.2)" }} // ホバー時の背景色を指定します
+          width="136%" // テキスト要素の幅を100%に設定します
           p={1}
         >
           ヘルプ
         </Text>
         <Text
-          fontSize="16px"
-          color="#F9FAF6"
+          fontSize="18px"
+          color="#FFFFFF"
+          fontFamily="'Roboto', sans-serif" // ここでフォントファミリーを指定
+          fontWeight="600"
           mt="2"
-          _hover={{ backgroundColor: "rgba(255, 255, 255, 0.15)" }} // ホバー時の背景色を指定します
-          width="110%" // テキスト要素の幅を100%に設定します
+          _hover={{ backgroundColor: "rgba(255, 255, 255, 0.2)" }} // ホバー時の背景色を指定します
+          width="136%" // テキスト要素の幅を100%に設定します
           p={1}
         >
           問い合わせ
         </Text>
         <Text
-          fontSize="16px"
-          color="#F9FAF6"
+          fontSize="18px"
+          color="#FFFFFF"
+          fontFamily="'Roboto', sans-serif" // ここでフォントファミリーを指定
+          fontWeight="600"
           mt="2"
-          _hover={{ backgroundColor: "rgba(255, 255, 255, 0.15)" }} // ホバー時の背景色を指定します
-          width="110%" // テキスト要素の幅を100%に設定します
+          _hover={{ backgroundColor: "rgba(255, 255, 255, 0.2)" }} // ホバー時の背景色を指定します
+          width="136%" // テキスト要素の幅を100%に設定します
           p={1}
         >
           運営会社

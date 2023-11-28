@@ -39,7 +39,7 @@ const Feed = ({ setShowFeed }) => {
   // 画面表示
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [fileContent, setFileContent] = useState("");
-  const [encoding, setEncoding] = useState("UTF-8"); // 初期エンコーディングをUTF-8とする
+  const [encoding, setEncoding] = useState("Shift_JIS-8"); // 初期エンコーディングをUTF-8とする
   const [uint8Array, setUint8Array] = useState(null); // 追加: バイナリデータを保持するステート
 
   useEffect(() => {
@@ -217,7 +217,7 @@ const Feed = ({ setShowFeed }) => {
 
   //<Box padding="20px" maxW="1000px" mx="auto">
   return (
-    <Box padding="20px" maxW="600px" mx="auto">
+    <Box padding="100px 20px 20px" maxW="600px" mx="auto">
       <section>
         {/* Flex container to align items horizontally */}
         <Flex justifyContent="space-between" alignItems="center" mb="8">
