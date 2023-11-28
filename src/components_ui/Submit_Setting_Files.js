@@ -34,7 +34,7 @@ import SelectFiles from "./SelectFiles";
 import FormTitle from "./FormTitle";
 import FormTime from "./FormTime";
 import FormMemberName from "./FormMemberName";
-import DL from "../component/DLfirebase";
+import DL from "../components/DLfirebase";
 
 import { getCurrentUser } from "../components/firebaseUtils"; // 20230923 追加
 import axios from "axios";
@@ -172,7 +172,7 @@ function Submit_Setting_Files() {
 
   return (
     <div>
-      <Flex direction="column" width="100%">
+      <Flex direction="column" width="100%" paddingTop="20px">
         {hasStartedTranscription ? (
           // 3. hasStartedTranscriptionがtrueの場合の表示
           <>

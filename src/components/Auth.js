@@ -161,26 +161,6 @@ function Auth() {
     await auth.signInWithEmailAndPassword(email, password);
   };
 
-  /*const signUpEmail = async () => {
-    const authUser = await auth.createUserWithEmailAndPassword(email, password);
-    let url = "";
-    if (avatarImage) {
-      const S =
-        "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-      const N = 16;
-      const randomChar = Array.from(crypto.getRandomValues(new Uint32Array(N)))
-        .map((n) => S[n % S.length])
-        .join("");
-      const fileName = randomChar + "_" + avatarImage.name;
-      await storage.ref(`avatars/${fileName}`).put(avatarImage);
-      url = await storage.ref("avatars").child(fileName).getDownloadURL();
-    }
-    await authUser.user?.updateProfile({
-      displayName: username,
-      photoURL: url,
-    });
-  */
-
   const signUpEmail = async () => {
     const authUser = await auth.createUserWithEmailAndPassword(email, password);
 
