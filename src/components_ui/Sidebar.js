@@ -48,6 +48,9 @@ function Sidebar({ isOpen, toggleSidebar, setShowFeed }) {
     downloadFile(`/static/${userId}/result/summary/${fileName}`);
   };
 
+  // ゲストユーザーかどうかを判断
+  const isGuestUser = userId === "neqj1hQ76lWY5PUF1JExPzgmYyQ2"; // 例: ゲストユーザーのIDが "guest" の場合
+
   return (
     <Box
       as="nav"
@@ -138,69 +141,71 @@ function Sidebar({ isOpen, toggleSidebar, setShowFeed }) {
         </Text>
       </Box>
 
-      <Box mt="100px">
-        <Text
-          fontSize="18px"
-          color="#FFFFFF"
-          fontFamily="'Roboto', sans-serif" // ここでフォントファミリーを指定
-          fontWeight="600"
-          mt="2"
-          onClick={() => setShowFeed(true)}
-          _hover={{ backgroundColor: "rgba(255, 255, 255, 0.4)" }} // ホバー時の背景色を指定します
-          width="110%" // テキスト要素の幅を100%に設定します
-          p={1}
-        >
-          履歴ファイル
-        </Text>
-      </Box>
-
+      {!isGuestUser && (
+        <Box mt="100px">
+          <Text
+            fontSize="18px"
+            color="#FFFFFF"
+            fontFamily="'Roboto', sans-serif" // ここでフォントファミリーを指定
+            fontWeight="600"
+            mt="2"
+            onClick={() => setShowFeed(true)}
+            _hover={{ backgroundColor: "rgba(255, 255, 255, 0.4)" }} // ホバー時の背景色を指定します
+            width="110%" // テキスト要素の幅を100%に設定します
+            p={1}
+          >
+            履歴ファイル
+          </Text>
+        </Box>
+      )}
       {/* 20230917追加 ファイル履歴 */}
-      <Box mt="2px">
-        {Object.keys(fileGroups)
-          .sort((a, b) => b.localeCompare(a))
-          .slice(0, 6) // ここで最初の10件だけを取得
-          .map((date) => (
-            <Box key={date}>
-              <Text
-                fontSize="16px"
-                color="#FFFFFF"
-                fontFamily="'Roboto', sans-serif" // ここでフォントファミリーを指定
-                fontWeight="200"
-                mt="1"
-                ml="1"
-                onClick={() =>
-                  setExpandedDate(expandedDate === date ? null : date)
-                }
-                _hover={{ cursor: "pointer", textDecoration: "underline" }}
-              >
-                {date}
-              </Text>
-              {expandedDate === date &&
-                fileGroups[date].map((fileName) => (
-                  <Box display="flex" ml="0" mt="1" alignItems="center">
-                    <Text fontSize="12px" color="#F9FAF6" mr="2">
-                      ・
-                    </Text>
-                    <Text
-                      key={fileName}
-                      fontSize="16px"
-                      color="#FFFFFF"
-                      fontFamily="'Roboto', sans-serif" // ここでフォントファミリーを指定
-                      fontWeight="200"
-                      onClick={() => handleDownload(fileName)}
-                      _hover={{
-                        cursor: "pointer",
-                        textDecoration: "underline",
-                      }}
-                    >
-                      {fileName}
-                    </Text>
-                  </Box>
-                ))}
-            </Box>
-          ))}
-      </Box>
-
+      {!isGuestUser && (
+        <Box mt="2px">
+          {Object.keys(fileGroups)
+            .sort((a, b) => b.localeCompare(a))
+            .slice(0, 6) // ここで最初の10件だけを取得
+            .map((date) => (
+              <Box key={date}>
+                <Text
+                  fontSize="16px"
+                  color="#FFFFFF"
+                  fontFamily="'Roboto', sans-serif" // ここでフォントファミリーを指定
+                  fontWeight="200"
+                  mt="1"
+                  ml="1"
+                  onClick={() =>
+                    setExpandedDate(expandedDate === date ? null : date)
+                  }
+                  _hover={{ cursor: "pointer", textDecoration: "underline" }}
+                >
+                  {date}
+                </Text>
+                {expandedDate === date &&
+                  fileGroups[date].map((fileName) => (
+                    <Box display="flex" ml="0" mt="1" alignItems="center">
+                      <Text fontSize="12px" color="#F9FAF6" mr="2">
+                        ・
+                      </Text>
+                      <Text
+                        key={fileName}
+                        fontSize="16px"
+                        color="#FFFFFF"
+                        fontFamily="'Roboto', sans-serif" // ここでフォントファミリーを指定
+                        fontWeight="200"
+                        onClick={() => handleDownload(fileName)}
+                        _hover={{
+                          cursor: "pointer",
+                          textDecoration: "underline",
+                        }}
+                      >
+                        {fileName}
+                      </Text>
+                    </Box>
+                  ))}
+              </Box>
+            ))}
+        </Box>
+      )}
       <Box position="absolute" bottom="40px">
         <Text
           fontSize="18px"
