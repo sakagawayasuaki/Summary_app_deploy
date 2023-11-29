@@ -177,6 +177,27 @@ function Auth() {
     );
   };
 
+  // ゲストユーザーの情報（ダミーデータ）
+  const guestUserData = {
+    email: "guest_tech0@example.com",
+    password: "guest123_tech0",
+  };
+
+  // ゲストログイン処理
+  const signInAsGuest = async () => {
+    try {
+      // ここでFirebaseのsignInWithEmailAndPasswordを使用するか、
+      // もしくはゲストユーザーの情報をアプリの状態に設定する
+      await auth.signInWithEmailAndPassword(
+        guestUserData.email,
+        guestUserData.password
+      );
+      // その他の状態管理が必要な場合はここで行う
+    } catch (err) {
+      alert(err.message);
+    }
+  };
+
   return (
     <>
       <div className={classes.headerBar}></div> {/* これが新しいバーです */}
@@ -215,7 +236,6 @@ function Auth() {
               <br />
               利用するためには会員登録・ログインが必要です
             </Typography>
-
             <Typography
               component="h1"
               variant="h5"
@@ -241,30 +261,8 @@ function Auth() {
                       setUsername(e.target.value);
                     }}
                   />
-                  {/* 以下の Box セクションをコメントアウトまたは削除します
-                  <Box textAlign="center">
-                    <IconButton>
-                      <label>
-                        <AccountCircleIcon
-                          fontSize="large"
-                          className={
-                            avatarImage
-                              ? styles.login_addIconLoaded
-                              : styles.login_addIcon
-                          }
-                        />
-                        <input
-                          className={styles.login_hiddenIcon}
-                          type="file"
-                          onChange={onChangeImageHandler}
-                        />
-                      </label>
-                    </IconButton>
-                  </Box>
-                  */}
                 </>
               )}
-
               <TextField
                 variant="outlined"
                 margin="normal"
@@ -294,7 +292,6 @@ function Auth() {
                   setPassword(e.target.value);
                 }}
               />
-
               <Button
                 disabled={
                   isLogin
@@ -327,7 +324,6 @@ function Auth() {
               >
                 {isLogin ? "Login" : "Register"}
               </Button>
-
               <Grid container>
                 <Grid item xs>
                   <span
@@ -346,7 +342,6 @@ function Auth() {
                   </span>
                 </Grid>
               </Grid>
-
               <Button
                 fullWidth
                 variant="contained"
@@ -357,8 +352,18 @@ function Auth() {
               >
                 Sign In with Google
               </Button>
-            </form>
 
+              <Button
+                fullWidth
+                variant="contained"
+                color="primary"
+                style={{ backgroundColor: "#8F8080" }} // ここで背景色を設定
+                className={classes.submit}
+                onClick={signInAsGuest} // ゲストログイン処理を実行
+              >
+                Guest Login
+              </Button>
+            </form>
             <Modal open={openModal} onClose={() => setOpenModal(false)}>
               <div style={getModalStyle()} className={classes.modal}>
                 <div className={styles.login_modal}>
